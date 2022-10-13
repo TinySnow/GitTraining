@@ -27,7 +27,7 @@ public class TestUserController {
   }
 
   @GetMapping
-  public RowsResponse<TestUser> findList(@RequestBody TestUser testUser) {
+  public RowsResponse<TestUser> findList(TestUser testUser) {
     return RowsResponse.ok(testUserService.findList( testUser));
   }
 
@@ -38,7 +38,7 @@ public class TestUserController {
 
   @PutMapping(value = "/{id}")
   public DataResponse<TestUser> update(@PathVariable("id") Long id, @RequestBody TestUser testUser) {
-    testUser.setId(id);
+    testUser.setId(Math.toIntExact(id));
     return DataResponse.ok(testUserService.update( testUser));
   }
 
