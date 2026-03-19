@@ -1,0 +1,47 @@
+﻿# 《Rebooting AI》(Marcus & Davis)
+
+## 写在前面
+
+![](../../../covers/%E8%AF%AD%E8%A8%80%E5%AD%A6/%E3%80%8ARebooting%20AI%E3%80%8B(Marcus%20&%20Davis).png)
+
+　　本文讨论「语言学」下，「推荐书目」的「《Rebooting AI》(Marcus & Davis)」话题。
+　　在「《Rebooting AI》(Marcus & Davis)」上，不少人只记住名词，却忽略了真实场景中的约束条件。
+
+## 正文
+
+　　**核心观点：《Rebooting AI》(Marcus & Davis) 的价值，不在于定义本身，而在于它能否稳定改善决策。**
+　　在「《Rebooting AI》(Marcus & Davis)」这个主题里，最常见的偏差是把 语义 当成静态结论，而忽略 语用 与 句法 的联动。
+　　换句话说，《Rebooting AI》(Marcus & Davis) 不是一条孤立知识点，而是一套会随场景变化的判断规则。
+　　为了避免「《Rebooting AI》(Marcus & Davis)」出现抽象化空转，下文会把概念拆成可检验步骤。
+
+　　如果「《Rebooting AI》(Marcus & Davis)」当前没有下级分支，可以用「三问法」自检：
+　　1. 它在解释「《Rebooting AI》(Marcus & Davis)」时，解决的核心问题是什么？
+　　2. 它与 语篇 的上位概念相比，新增了哪些判断维度？
+　　3. 在哪些条件下，「《Rebooting AI》(Marcus & Davis)」这套判断会失效？
+
+　　来看一个简化案例：
+> 　　某学习者在应用「《Rebooting AI》(Marcus & Davis)」时，只复制步骤，不验证前提。短期看似有效，长期却不断返工。
+　　复盘后发现，「《Rebooting AI》(Marcus & Davis)」的问题不在努力程度，而在于没有区分「稳定规则」与「场景变量」。当他把 语义、语用、句法 三项变量写进检查表后，结果开始稳定。
+
+　　常见误区有两类：一是「把局部经验当成普遍规律」，二是「重技巧轻结构，导致重复犯错」。
+　　同时，《Rebooting AI》(Marcus & Davis) 往往与 《语料库语言学》(McEnery) 等同级主题互相制约，孤立理解很容易失真。
+　　<u>对「《Rebooting AI》(Marcus & Davis)」而言，判断是否真正掌握，不看能否复述定义，而看能否在新场景中给出一致、可解释、可复盘的选择。</u>
+
+　　给出一个针对「《Rebooting AI》(Marcus & Davis)」的可执行版本：
+　　1. 每周固定一次「《Rebooting AI》(Marcus & Davis)」复盘，把误区和修正动作写成清单。
+　　2. 先写一版「《Rebooting AI》(Marcus & Davis)」的最短定义，再给一个正例和一个反例。
+　　3. 两周后回看「《Rebooting AI》(Marcus & Davis)」的执行记录：保留有效动作，删除无效动作。
+
+　　最后总结：《Rebooting AI》(Marcus & Davis) 的学习目标，不是「记住」，而是「在变化中仍能做出高质量判断」。
+
+<br />
+
+　　南国微雪 Miyuki
+
+　　2026 年 3 月 8 日
+
+## 封面图
+
+![](../../../covers/%E8%AF%AD%E8%A8%80%E5%AD%A6/%E3%80%8ARebooting%20AI%E3%80%8B(Marcus%20&%20Davis).png)
+
+> 设计师 | 南国微雪
