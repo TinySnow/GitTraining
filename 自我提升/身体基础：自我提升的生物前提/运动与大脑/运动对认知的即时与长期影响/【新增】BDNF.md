@@ -1,0 +1,14 @@
+# BDNF（脑源性神经营养因子）：运动促进神经元生长与连接
+
+## 写在前面
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/自我提升/身体基础：自我提升的生物前提/运动与大脑/运动对认知的即时与长期影响/BDNF.png>)
+
+## 正文
+
+
+## 封面图
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/自我提升/身体基础/运动与大脑/运动对认知的即时与长期影响/BDNF.png>)
+
+> 设计师 | 南国微雪

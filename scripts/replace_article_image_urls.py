@@ -12,6 +12,7 @@
 补写规则：
 - 如果文件为空，会直接生成一个最小可编辑模板
 - 如果缺少 `## 写在前面` / `## 封面图`，会自动插入，而不是跳过
+- `## 封面图` 块会确保包含 `> 设计师 | 南国微雪`
 
 默认行为：
 - 仅 dry-run，不写回文件
@@ -34,7 +35,6 @@ import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable
-from urllib.parse import quote
 
 
 DEFAULT_BASE_URL = (
@@ -42,10 +42,12 @@ DEFAULT_BASE_URL = (
     "TinySnow/GithubImageHosting/main/blog/patchouli-project"
 )
 SUPPORTED_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".gif")
+DEFAULT_DESIGNER_LINE = "> 设计师 | 南国微雪"
 HEADING_RE = re.compile(r"(?m)^##\s+(.+?)\s*$")
 IMAGE_RE = re.compile(r"!\[(?P<alt>[^\]]*)\]\((?P<url>[^)\n]+)\)")
 DISCUSSION_RE = re.compile(r"本文讨论：\s*(?P<topic>.+?)(?:。|\n)")
 H1_RE = re.compile(r"(?m)^#\s+(.+?)\s*$")
+DESIGNER_RE = re.compile(r"(?m)^>\s*设计师\b.*$")
 EXCLUDED_DIRS = {".git", "covers", "fonts", "maps", "scripts", "venv"}
 
 
@@ -457,8 +459,24 @@ def find_asset_path(repo_root: Path, stem: Path) -> Path | None:
 
 
 def path_to_url(base_url: str, relative_path: Path) -> str:
-    encoded = "/".join(quote(part, safe="") for part in relative_path.parts)
-    return f"{base_url.rstrip('/')}/{encoded}"
+    """
+    组装 GitHub Raw URL。
+
+    这里刻意不做 `%` 编码，保留中文可读性。
+    """
+    return f"{base_url.rstrip('/')}/{relative_path.as_posix()}"
+
+
+def markdown_url_destination(url: str) -> str:
+    """
+    将 URL 转成 Markdown 链接目标。
+
+    使用 `<...>` 包裹，确保带空格/中文/括号时 Markdown 仍能稳定解析。
+    """
+    stripped = (url or "").strip()
+    if stripped.startswith("<") and stripped.endswith(">"):
+        return stripped
+    return f"<{stripped}>"
 
 
 def extract_discussion_topic(content: str) -> str | None:
@@ -501,7 +519,9 @@ def insert_missing_section(content: str, section_name: str, new_url: str) -> str
     - `写在前面`：优先插到 `## 正文` 之前；没有正文就插到 H1 后
     - `封面图`：总是追加到文末
     """
-    block = f"## {section_name}\n\n![]({new_url})\n"
+    block = f"## {section_name}\n\n![]({markdown_url_destination(new_url)})\n"
+    if section_name == "封面图":
+        block = f"{block}\n{DEFAULT_DESIGNER_LINE}\n"
 
     if section_name == "封面图":
         base = content.rstrip("\n")
@@ -527,6 +547,7 @@ def upsert_section_image(content: str, section_name: str, new_url: str) -> tuple
     2. 标题块存在但没写图片：补一张图片进去
     3. 标题块不存在：直接插入整个标题块
     """
+    new_dest = markdown_url_destination(new_url)
     bounds = find_section_bounds(content, section_name)
     if bounds is None:
         updated = insert_missing_section(content, section_name, new_url)
@@ -541,7 +562,7 @@ def upsert_section_image(content: str, section_name: str, new_url: str) -> tuple
     body = content[body_start:body_end]
     image_match = IMAGE_RE.search(body)
     if image_match is None:
-        new_body = f"\n\n![]({new_url})" + body
+        new_body = f"\n\n![]({new_dest})" + body
         updated = content[:body_start] + new_body + content[body_end:]
         return updated, SectionChange(
             name=section_name,
@@ -551,17 +572,37 @@ def upsert_section_image(content: str, section_name: str, new_url: str) -> tuple
         )
 
     old_url = image_match.group("url")
-    if old_url == new_url:
+    if old_url == new_dest:
         return content, None
 
     new_body = (
         body[: image_match.start("url")]
-        + new_url
+        + new_dest
         + body[image_match.end("url") :]
     )
     updated = content[:body_start] + new_body + content[body_end:]
     change = SectionChange(name=section_name, old_url=old_url, new_url=new_url, action="replace")
     return updated, change
+
+
+def ensure_cover_designer_line(content: str) -> tuple[str, bool]:
+    """
+    确保 `## 封面图` 标题块中包含设计师信息行。
+
+    仅在缺失时补一行，已有 `> 设计师 ...` 时不改动原文。
+    """
+    bounds = find_section_bounds(content, "封面图")
+    if bounds is None:
+        return content, False
+
+    _, _, body_start, body_end = bounds
+    body = content[body_start:body_end]
+    if DESIGNER_RE.search(body):
+        return content, False
+
+    patched_body = body.rstrip("\n") + "\n\n" + DEFAULT_DESIGNER_LINE + "\n"
+    updated = content[:body_start] + patched_body + content[body_end:]
+    return updated, True
 
 
 def build_empty_article_template(article_title: str, map_url: str | None, cover_url: str | None) -> tuple[str, list[SectionChange]]:
@@ -578,7 +619,7 @@ def build_empty_article_template(article_title: str, map_url: str | None, cover_
     changes: list[SectionChange] = []
 
     if map_url is not None:
-        lines.extend(["## 写在前面", "", f"![]({map_url})", ""])
+        lines.extend(["## 写在前面", "", f"![]({markdown_url_destination(map_url)})", ""])
         changes.append(
             SectionChange(
                 name="写在前面",
@@ -591,7 +632,16 @@ def build_empty_article_template(article_title: str, map_url: str | None, cover_
     lines.extend(["## 正文", "", ""])
 
     if cover_url is not None:
-        lines.extend(["## 封面图", "", f"![]({cover_url})", ""])
+        lines.extend(
+            [
+                "## 封面图",
+                "",
+                f"![]({markdown_url_destination(cover_url)})",
+                "",
+                DEFAULT_DESIGNER_LINE,
+                "",
+            ]
+        )
         changes.append(
             SectionChange(
                 name="封面图",
@@ -624,7 +674,7 @@ def wrap_content_with_standard_sections(
     changes: list[SectionChange] = []
 
     if map_url is not None:
-        lines.extend(["## 写在前面", "", f"![]({map_url})", ""])
+        lines.extend(["## 写在前面", "", f"![]({markdown_url_destination(map_url)})", ""])
         changes.append(
             SectionChange(
                 name="写在前面",
@@ -641,7 +691,16 @@ def wrap_content_with_standard_sections(
         lines.append("")
 
     if cover_url is not None:
-        lines.extend(["## 封面图", "", f"![]({cover_url})", ""])
+        lines.extend(
+            [
+                "## 封面图",
+                "",
+                f"![]({markdown_url_destination(cover_url)})",
+                "",
+                DEFAULT_DESIGNER_LINE,
+                "",
+            ]
+        )
         changes.append(
             SectionChange(
                 name="封面图",
@@ -800,6 +859,18 @@ def process_file(
             updated, change = upsert_section_image(updated, "封面图", cover_url)
             if change is not None:
                 changes.append(change)
+
+    # 统一兜底：封面图块里若缺失设计师信息，就补上。
+    updated, designer_added = ensure_cover_designer_line(updated)
+    if designer_added:
+        changes.append(
+            SectionChange(
+                name="封面图设计师信息",
+                old_url="<missing>",
+                new_url=DEFAULT_DESIGNER_LINE,
+                action="insert",
+            )
+        )
 
     if not changes:
         if resolved_by == "path":
