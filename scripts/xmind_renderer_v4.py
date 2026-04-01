@@ -24,9 +24,23 @@
 
     python xmind_renderer_v4.py                  # 渲染全部画布
     python xmind_renderer_v4.py -s 哲学           # 只渲染"哲学"画布
+    python xmind_renderer_v4.py -p 哲学/总论      # 只渲染该路径前缀下的节点
+    python xmind_renderer_v4.py -s 哲学 -p 总论    # 在指定画布内渲染该局部
     python xmind_renderer_v4.py -i 其他文件.xmind # 指定其他 XMind 文件
     python xmind_renderer_v4.py -o 自定义输出目录  # 指定输出目录
     python xmind_renderer_v4.py -h                # 查看帮助
+
+【增量更新推荐（只改一个分支时）】
+  当你仅修改思维导图中的局部内容时，优先使用 --path/-p 做前缀过滤，
+  避免重跑整张图，显著缩短渲染时间。
+
+    # 仅更新“哲学”画布下“总论”分支
+    python xmind_renderer_v4.py -i ./学海计划.xmind -o ./maps -s 哲学 -p 总论
+
+    # 仅更新更深层的小分支（完整路径）
+    python xmind_renderer_v4.py -i ./学海计划.xmind -o ./maps -p 哲学/总论/哲学的分支体系
+
+  注意：局部渲染不会自动删除历史输出文件；若节点重命名，旧 PNG 可能保留在输出目录。
 
 【输出目录结构】
   you_are_here/
@@ -198,6 +212,55 @@ def collect_all_paths(node, path=None, out=None):
     for c in get_children(node):
         collect_all_paths(c, path, out)
     return out
+
+
+# ── 路径过滤 ──────────────────────────────────────────────────────────────────
+
+def parse_path_expr(expr):
+    """
+    将用户输入的路径表达式解析为路径片段列表。
+    支持分隔符：/, \\, ->, →, __
+    例如：
+      "哲学/总论/哲学的分支体系"
+      "哲学→总论→哲学的分支体系"
+      "哲学__总论__哲学的分支体系"
+    """
+    expr = (expr or "").strip()
+    if not expr:
+        return []
+    normalized = expr.replace("->", "/").replace("→", "/").replace("__", "/").replace("\\", "/")
+    return [p.strip() for p in normalized.split("/") if p.strip()]
+
+
+def filter_paths_by_prefix(all_paths, sheet_title, root_title, path_expr):
+    """
+    按路径前缀筛选节点路径，用于局部渲染。
+    兼容两种写法：
+      - 完整路径（从根节点开始）：哲学/总论
+      - 画布局部路径（不含根）：总论（会自动尝试补根）
+    返回：
+      (filtered_paths, matched_prefix)
+    """
+    prefix_parts = parse_path_expr(path_expr)
+    if not prefix_parts:
+        return all_paths, []
+
+    candidates = [prefix_parts]
+    if root_title and prefix_parts[0] != root_title:
+        candidates.append([root_title] + prefix_parts)
+    if sheet_title and root_title and sheet_title != root_title and prefix_parts[0] != root_title:
+        # 极少数文件中画布名与根标题不同，这里做兜底
+        candidates.append([sheet_title] + prefix_parts)
+
+    best_paths = []
+    best_prefix = []
+    for cand in candidates:
+        matched = [p for p in all_paths if len(p) >= len(cand) and p[:len(cand)] == cand]
+        if len(matched) > len(best_paths):
+            best_paths = matched
+            best_prefix = cand
+
+    return best_paths, best_prefix
 
 
 # ── 树构建 ────────────────────────────────────────────────────────────────────
@@ -617,12 +680,16 @@ def main():
 示例：
   python xmind_renderer_v4.py                  渲染全部画布
   python xmind_renderer_v4.py -s 哲学           只渲染"哲学"画布
+  python xmind_renderer_v4.py -p 哲学/总论      只渲染该路径前缀下的节点
+  python xmind_renderer_v4.py -s 哲学 -p 总论    在指定画布内渲染该局部
   python xmind_renderer_v4.py -i 其他.xmind     指定其他 XMind 文件
   python xmind_renderer_v4.py -o my_output      指定输出目录
         """
     )
     parser.add_argument("--sheet",  "-s", default="",
                         help="只渲染指定画布名称，留空则渲染全部（例如：-s 哲学）")
+    parser.add_argument("--path",   "-p", default="",
+                        help="只渲染指定路径前缀下的节点（例如：-p 哲学/总论 或 -s 哲学 -p 总论）")
     parser.add_argument("--input",  "-i", default=INPUT_FILE,
                         help=f"XMind 文件路径（默认：{INPUT_FILE}）")
     parser.add_argument("--output", "-o", default=OUTPUT_DIR,
@@ -630,6 +697,7 @@ def main():
     args = parser.parse_args()
 
     only_sheet = args.sheet
+    only_path  = args.path
     input_file = args.input
     output_dir = args.output
 
@@ -649,6 +717,18 @@ def main():
 
         side_map  = compute_side_map(root)
         all_paths = collect_all_paths(root)
+        root_title = root.get("title", "")
+
+        if only_path:
+            filtered_paths, matched_prefix = filter_paths_by_prefix(
+                all_paths, sheet_title, root_title, only_path
+            )
+            if not filtered_paths:
+                print(f"   ⚠️ 路径过滤未命中：{only_path}（本画布跳过）")
+                continue
+            all_paths = filtered_paths
+            print(f"   路径过滤：{'/'.join(matched_prefix)}")
+
         print(f"   共 {len(all_paths)} 个节点")
         print(f"   右侧：{sum(1 for s in side_map.values() if s=='right')} 个一级主题  "
               f"左侧：{sum(1 for s in side_map.values() if s=='left')} 个一级主题")
