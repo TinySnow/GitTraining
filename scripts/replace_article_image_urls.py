@@ -44,7 +44,12 @@ DEFAULT_BASE_URL = (
 SUPPORTED_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".gif")
 DEFAULT_DESIGNER_LINE = "> 设计师 | 南国微雪"
 HEADING_RE = re.compile(r"(?m)^##\s+(.+?)\s*$")
-IMAGE_RE = re.compile(r"!\[(?P<alt>[^\]]*)\]\((?P<url>[^)\n]+)\)")
+# Markdown 图片匹配：
+# - 支持常规写法：![](url)
+# - 支持尖括号目的地：![](<url>)（可包含中文、空格、括号）
+IMAGE_RE = re.compile(
+    r"!\[(?P<alt>[^\]]*)\]\(\s*(?P<url><[^>\n]+>|[^)\n]+)\s*\)"
+)
 DISCUSSION_RE = re.compile(r"本文讨论：\s*(?P<topic>.+?)(?:。|\n)")
 H1_RE = re.compile(r"(?m)^#\s+(.+?)\s*$")
 DESIGNER_RE = re.compile(r"(?m)^>\s*设计师\b.*$")
@@ -571,15 +576,23 @@ def upsert_section_image(content: str, section_name: str, new_url: str) -> tuple
             action="insert",
         )
 
-    old_url = image_match.group("url")
-    if old_url == new_dest:
+    # 为避免“多次运行后图片行残留脏尾巴”问题，统一重写整行图片语法，
+    # 而不是只替换 URL 片段。
+    line_start = body.rfind("\n", 0, image_match.start()) + 1
+    line_end = body.find("\n", image_match.end())
+    if line_end == -1:
+        line_end = len(body)
+
+    current_line = body[line_start:line_end]
+    line_indent = re.match(r"[ \t]*", current_line).group(0)
+    canonical_line = f"{line_indent}![{image_match.group('alt')}]({new_dest})"
+    old_url = image_match.group("url").strip()
+
+    # URL 与整行都一致时不写回，保证幂等。
+    if old_url == new_dest and current_line == canonical_line:
         return content, None
 
-    new_body = (
-        body[: image_match.start("url")]
-        + new_dest
-        + body[image_match.end("url") :]
-    )
+    new_body = body[:line_start] + canonical_line + body[line_end:]
     updated = content[:body_start] + new_body + content[body_end:]
     change = SectionChange(name=section_name, old_url=old_url, new_url=new_url, action="replace")
     return updated, change

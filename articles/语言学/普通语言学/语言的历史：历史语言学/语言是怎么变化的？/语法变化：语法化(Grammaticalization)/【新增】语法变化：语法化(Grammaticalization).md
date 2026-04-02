@@ -1,0 +1,14 @@
+# 语法变化：语法化
+
+## 写在前面
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/语言学/普通语言学/语言的历史：历史语言学/语言是怎么变化的？/语法变化：语法化(Grammaticalization)/语法变化.png>)
+
+## 正文
+
+
+## 封面图
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/语言学/普通语言学/语言的历史/语言是怎么变化的？/语法变化/语法变化.png>)
+
+> 设计师 | 南国微雪

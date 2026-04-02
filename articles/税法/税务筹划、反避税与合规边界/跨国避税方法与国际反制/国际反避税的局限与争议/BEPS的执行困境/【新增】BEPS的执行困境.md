@@ -1,0 +1,14 @@
+# BEPS的执行困境
+
+## 写在前面
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/税法/税务筹划、反避税与合规边界/跨国避税方法与国际反制/国际反避税的局限与争议/BEPS的执行困境/BEPS的执行困境.png>)
+
+## 正文
+
+
+## 封面图
+
+![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/税法/税务筹划、反避税与合规边界/跨国避税方法与国际反制/国际反避税的局限与争议/BEPS的执行困境/BEPS的执行困境.png>)
+
+> 设计师 | 南国微雪
