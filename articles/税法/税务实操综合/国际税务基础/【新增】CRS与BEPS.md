@@ -3,7 +3,7 @@
 
 ## 写在前面
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/税法/税务实操综合/国际税务基础/CRS与BEPS.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/maps/税法/税务实操综合/国际税务基础/CRS与BEPS.png>)
 
 ## 正文
 

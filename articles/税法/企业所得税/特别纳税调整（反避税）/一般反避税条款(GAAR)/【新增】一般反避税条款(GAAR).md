@@ -2,7 +2,7 @@
 
 ## 写在前面
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/税法/企业所得税/特别纳税调整（反避税）/一般反避税条款(GAAR)/一般反避税条款.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/maps/税法/企业所得税/特别纳税调整（反避税）/一般反避税条款(GAAR)/一般反避税条款.png>)
 
 ## 正文
 

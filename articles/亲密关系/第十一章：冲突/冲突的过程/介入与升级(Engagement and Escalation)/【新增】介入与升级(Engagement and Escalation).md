@@ -2,7 +2,7 @@
 
 ## 写在前面
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/亲密关系/第十一章：冲突/冲突的过程/介入与升级(Engagement and Escalation)/介入与升级.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/maps/亲密关系/第十一章：冲突/冲突的过程/介入与升级(Engagement and Escalation)/介入与升级.png>)
 
 ## 正文
 

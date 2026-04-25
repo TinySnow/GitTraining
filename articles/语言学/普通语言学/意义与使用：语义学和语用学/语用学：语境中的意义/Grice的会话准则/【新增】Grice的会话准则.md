@@ -2,7 +2,7 @@
 
 ## 写在前面
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/语言学/普通语言学/意义与使用：语义学和语用学/语用学：语境中的意义/Grice的会话准则/Grice的会话准则.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/maps/语言学/普通语言学/意义与使用：语义学和语用学/语用学：语境中的意义/Grice的会话准则/Grice的会话准则.png>)
 
 ## 正文
 

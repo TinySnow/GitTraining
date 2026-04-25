@@ -2,7 +2,7 @@
 
 ## 写在前面
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/maps/自我提升/行动落地：如何真正改变/习惯养成/建立新习惯/实施意图：_当X发生时，我会做Y_.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/maps/自我提升/行动落地：如何真正改变/习惯养成/建立新习惯/实施意图：_当X发生时，我会做Y_.png>)
 
 ## 正文
 
