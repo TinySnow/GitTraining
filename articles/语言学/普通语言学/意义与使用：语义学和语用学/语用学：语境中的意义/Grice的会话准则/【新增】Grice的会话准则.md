@@ -9,6 +9,6 @@
 
 ## 封面图
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/语言学/普通语言学/意义与使用/语用学/Grice的会话准则/Grice的会话准则.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/covers/语言学/普通语言学/意义与使用/语用学/Grice的会话准则/Grice的会话准则.png>)
 
 > 设计师 | 南国微雪

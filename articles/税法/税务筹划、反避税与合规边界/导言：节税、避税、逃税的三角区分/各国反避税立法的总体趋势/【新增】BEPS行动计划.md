@@ -9,6 +9,6 @@
 
 ## 封面图
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/税法/税务筹划、反避税与合规边界/导言/各国反避税立法的总体趋势/BEPS行动计划.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/covers/税法/税务筹划、反避税与合规边界/导言/各国反避税立法的总体趋势/BEPS行动计划.png>)
 
 > 设计师 | 南国微雪

@@ -9,6 +9,6 @@
 
 ## 封面图
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/语言学/普通语言学/语言的历史/语言是怎么变化的？/语音变化的规律性/为什么拉丁语pater=英语father？.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/covers/语言学/普通语言学/语言的历史/语言是怎么变化的？/语音变化的规律性/为什么拉丁语pater=英语father？.png>)
 
 > 设计师 | 南国微雪

@@ -9,6 +9,6 @@
 
 ## 封面图
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/哲学/哲学的应用/技术哲学/AI伦理.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/covers/哲学/哲学的应用/技术哲学/AI伦理.png>)
 
 > 设计师 | 南国微雪

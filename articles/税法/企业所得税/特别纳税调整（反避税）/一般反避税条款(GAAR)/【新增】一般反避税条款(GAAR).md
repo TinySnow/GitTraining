@@ -9,6 +9,6 @@
 
 ## 封面图
 
-![](<https://raw.githubusercontent.com/TinySnow/GithubImageHosting/main/blog/patchouli-project/covers/税法/企业所得税/特别纳税调整/一般反避税条款/一般反避税条款.png>)
+![](<https://raw.githubusercontent.com/TinySnow/patchouli-project-resources/master/covers/税法/企业所得税/特别纳税调整/一般反避税条款/一般反避税条款.png>)
 
 > 设计师 | 南国微雪
